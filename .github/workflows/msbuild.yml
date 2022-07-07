@@ -26,7 +26,16 @@ jobs:
     - uses: actions/checkout@v3
     
     - name: Installs WDK
-      run: PowerShell.exe {Write-Host "Downloading..."; $exePath = "$env:temp\wdksetup.exe"; (New-Object Net.WebClient).DownloadFile("https://go.microsoft.com/fwlink/?linkid=2128854", $exePath); Write-Host "Installing..."; cmd /c; start /wait $exePath /quiet; Remove-Item $exePath -Force -ErrorAction Ignore; Write-Host "OK"}    
+      run: |
+        Write-Host "Downloading..."
+        $exePath = "$env:temp\wdksetup.exe"
+        (New-Object Net.WebClient).DownloadFile("https://go.microsoft.com/fwlink/?linkid=2128854", $exePath)
+        Write-Host "Installing..."
+        cmd /c
+        start /wait $exePath /quiet
+        Remove-Item $exePath -Force -ErrorAction Ignore
+        Write-Host "OK"
+      shell: powershell
     
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
