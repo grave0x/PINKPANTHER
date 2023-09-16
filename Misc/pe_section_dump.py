@@ -33,11 +33,10 @@ except:
 
 def main():
 	try:
-		if len(sys.argv) == 3:
-			inputfilename = sys.argv[1]
-			outputfilename = sys.argv[2]
-		else:
+		if len(sys.argv) != 3:
 			raise
+		inputfilename = sys.argv[1]
+		outputfilename = sys.argv[2]
 	except:
 		print("Invalid args.")
 		print(__doc__)
@@ -45,10 +44,8 @@ def main():
 
 	pe = pefile.PE(inputfilename)
 	text = pe.sections[0].get_data()
-	file = open(outputfilename, "wb+")
-	file.write(text)
-	file.close()
-
+	with open(outputfilename, "wb+") as file:
+		file.write(text)
 	print("[+] Dumped .text section from PE file.")
 
 
